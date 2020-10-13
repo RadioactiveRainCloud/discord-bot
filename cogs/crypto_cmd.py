@@ -8,7 +8,6 @@ class CryptoCmd(commands.Cog):
     def __init__(self, bot):
         self.bot = bot;
         self.coinbase_client = cbpro.PublicClient();
-        print("Loading cryptocurrency data commands. . .");
 
     # Command for grabbing a crypto's USD price stats.
     # arg should be a ticker symbol for the desired cryptocurrency.
@@ -26,7 +25,7 @@ class CryptoCmd(commands.Cog):
         embed_message = discord.Embed(
         title = title,
         type = "rich",
-        colour = discord.Colour.blue()
+        colour = self.bot._embed_color
         );
 
         # Iterates through the data dictionary returned from coinbase to

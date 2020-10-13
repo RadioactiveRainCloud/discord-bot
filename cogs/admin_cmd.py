@@ -6,7 +6,6 @@ class AdminCmd(commands.Cog):
     # Initializes the cog
     def __init__(self, bot):
         self.bot = bot;
-        print("Loading server administration commands. . .");
 
 # setup command for the cog
 def setup(bot):
