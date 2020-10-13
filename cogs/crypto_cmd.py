@@ -26,7 +26,7 @@ class CryptoCmd(commands.Cog):
         embed_message = discord.Embed(
         title = title,
         type = "rich",
-        colour = discord.Colour.blue()
+        colour = discord.Colour.red()
         );
 
         # Iterates through the data dictionary returned from coinbase to

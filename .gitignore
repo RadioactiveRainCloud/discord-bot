@@ -1,0 +1,2 @@
+# Ignore .env due to confidential bot token
+.env

@@ -35,11 +35,13 @@ class DevCmd(commands.Cog):
     async def reload_all(self, ctx):
         # Print that all extensions are being reloaded
         print("Reloading all extensions.");
+        message = "Reloading. . .\n";
         # Iterate through all extensions in bot's extension list and reload them
         for ext in self.bot.extension_list:
             self.bot.reload_extension(ext);
             print(f"{ext} reloaded.");
-            await ctx.send(f"{ext} reloaded.");
+            message += f"{ext} reloaded.\n";
+        await ctx.send(message);
 
         #TODO: Set up an exception in event that the extension cannot be found
 
