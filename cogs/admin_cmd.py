@@ -9,7 +9,7 @@ class AdminCmd(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @commands.has_permissions(ban_members = true)
+    @commands.has_permissions(ban_members = True)
     async def ban(self,ctx,target: commands.MemberConverter,*words):
         try:
             reason = " ".join(words)
@@ -18,49 +18,40 @@ class AdminCmd(commands.Cog):
             await guild.ban(target, reason=reason, delete_message_days=deleteMsgDays)
             await ctx.send(str(target)+" banned"+", Reason: "+reason)
             #TODO logger.debug(str(target)+" banned"+", Reason: "+reason)
-            pass
         except discord.Forbidden as Forbidden:
             await ctx.send("You do not have permissions to do the actions required.")
-            pass
         except discord.HTTPException as HTTPException:
             await ctx.send("Banning failed.")
-            pass
 
     @ban.error
     async def ban_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
             await ctx.send("You did not pass all the required arguments for this command.")
         else: 
-            #TODO logger.debug("unknown error when running ban command: "+ error)
-            
+            pass #TODO logger.debug("unknown error when running ban command: "+ error)
+        
     @commands.command()
-    async def purge(self,ctx,target: commands.MemberConverter,amount):
+    @commands.has_permissions(manage_messages = True)
+    async def purge(self,ctx,target: commands.MemberConverter,amount: int):
         try:
             channel = ctx.message.channel
-
             def is_target(m):
                 return m.author == target
-
-            if isinstance(amount,int):
-                deleted = await channel.purge(amount,check=is_target)
-                await channel.send("Deleted {} message(s)".format(len(deleted)))
-                #TODO logger.debug("Successfully deleted {} message(s) from {}".format(len(deleted),target))
-            else:
-                raise discord.ext.commands.errors.MissingRequiredArgument
-            pass
+            deleted = await channel.purge(limit = amount,check = is_target)
+            await channel.send("Deleted {} message(s)".format(len(deleted)))
+            #TODO logger.debug("Successfully deleted {} message(s) from {}".format(len(deleted),target)
         except discord.Forbidden as Forbidden:
             await ctx.send("You do not have permissions to do the actions required.")
-            pass
         except discord.HTTPException as HTTPException:
             await ctx.send("Purge failed.")
-            pass
 
     @purge.error
     async def purge_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
             await ctx.send("You did not pass all the required arguments for this command.")
         else: 
-            #TODO logger.debug("unknown error when running ban command: "+ error)
+            pass #TODO logger.debug("unknown error when running ban command: "+ error)\
+
 # setup command for the cog
 def setup(bot):
-    bot.add_cog(AdminCmd(bot));
+    bot.add_cog(AdminCmd(bot))
