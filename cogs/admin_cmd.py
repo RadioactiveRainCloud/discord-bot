@@ -19,8 +19,8 @@ class AdminCmd(commands.Cog):
         logger.addHandler(fileHandler)
 
     @commands.command()
+    @commands.has_permissions(ban_members = true)
     async def ban(self,ctx,target: commands.MemberConverter,*words):
-        
         try:
             reason = " ".join(words)
             deleteMsgDays = 0
@@ -30,17 +30,19 @@ class AdminCmd(commands.Cog):
             logging.getLogger("cogs.admin").debug(str(target)+" banned"+", Reason: "+reason)
             pass
         except discord.Forbidden as Forbidden:
-            await ctx.send("You are not allowed to use this command."+ str(Forbidden))
+            await ctx.send("You do not have permissions to do the actions required.")
+            pass
+        except discord.HTTPException as HTTPException:
+            await ctx.send("Banning failed.")
             pass
 
     @ban.error
     async def ban_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
-            await ctx.send("You forgot one of the required arguments.")
+            await ctx.send("You did not pass all the required arguments for this command.")
         else: 
             logging.getLogger("cogs.admin").debug("unknown error when running ban command: "+ error)
-
-
+            
 # setup command for the cog
 def setup(bot):
     bot.add_cog(AdminCmd(bot));
