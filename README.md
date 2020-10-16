@@ -8,31 +8,14 @@ present with .py extension files for the bot to have any useful functionality.
 
 ## Setup
 In order to use this bot, a file named ".env" must be included in the bot's
-directory to include the token for your bot. This file can be created in a text
-editor and should look similar to the example here:
+directory to include the token for your bot. The bot's token is required for
+logging into discord. Instructions for obtaining a token are shown belo. The
+.env file can be created in a text editor and should look similar to the example
+here:
 
 ```
 DISCORD_TOKEN=JIKDSKLFJ-THISisRANDOMtext.LoOKsLIkeAt0k3N-ASDFgHjkL
-COMMAND_PREFIX=$
-LOG_FILE=discord_bot.log
-EMBED_COLOR=0x6699cc
 ```
-
-The DISCORD_TOKEN is the only required variable to be set. All other environment
-variables' default values are specified with their descriptions below.
-
-DISCORD_TOKEN
-* Sets the bot's token for logging into discord. Instructions for obtaining a
-  token are listed below.
-
-COMMAND_PREFIX: $
-* Sets the prefix used to invoke bot commands from chat.
-
-LOG_FILE:       discord_bot.log
-* Sets the path for the bot log.
-
-EMBED_COLOR:    0x3498db  (the same value as discord.Colour.blue())
-* Sets the color the bot uses when posting embed messages.
 
 To obtain a bot token:
 
@@ -47,3 +30,7 @@ To obtain a bot token:
 
 1.  Below your bot's username should be a TOKEN. You can click to reveal the
     token or you can simply click the "Copy" button to add it to your clipboard.
+
+The bot's command prefix and its default embed color are now set in the
+__init__() function for the bot. Default values for these are "$" and blue
+respectively.
