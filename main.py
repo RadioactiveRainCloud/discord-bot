@@ -6,6 +6,11 @@ from typing import List
 import warnings
 from dotenv import load_dotenv
 from discord.ext import commands
+from discord.ext.commands.errors import (
+    ExtensionNotFound,
+    ExtensionAlreadyLoaded,
+    ExtensionFailed,
+    NoEntryPointError)
 from pathlib import Path
 
 class DiscordBotError(Exception):
@@ -40,7 +45,6 @@ class DiscordBot(commands.Bot):
                 if item.suffix == ".py":
                     path = item.relative_to(folder_path.parent);
                     ext = str(path).replace("\\", ".")[:-3];
-                    print(ext);
                     extension_list.append(ext);
                     print(f"added {ext} to cog list.");
         else:
@@ -55,14 +59,9 @@ class DiscordBot(commands.Bot):
         for ext in extension_list:
             try:
                 self.load_extension(ext);
-            except commands.errors.ExtensionNotFound:
-                print(f"{ext} not found.");
-            except commands.errors.ExtensionAlreadyLoaded:
-                print(f"{ext} already loaded.");
-            except commands.errors.ExtensionFailed:
-                print(f"{ext} failed; execution error.");
-            except commands.errors.NoEntryPointError:
-                print(f"{ext} has not setup function.");
+            except (ExtensionNotFound, ExtensionAlreadyLoaded,
+                ExtensionFailed, NoEntryPointError) as e:
+                print(f"{e} for {ext}");
             else:
                 print(f"{ext} loaded successfully.");
         return;
@@ -95,6 +94,11 @@ class DiscordBot(commands.Bot):
     async def on_ready(self):
         print(f"Logged in as {self.user}.");
 
+# The main function of the program
+def main() -> None:
+    OpenBot = DiscordBot();
+    OpenBot.run();
+    return;
 
-discord_bot = DiscordBot();
-discord_bot.run();
+if __name__ == "__main__":
+    main();
