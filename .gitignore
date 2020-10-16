@@ -1,7 +1,16 @@
 # Ignore .env due to confidential bot token
-.env
+*.env
+
+# Ignore log files
 .log
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+# Experimental functionality
+*_experiment*
+
+# db files
+*.db

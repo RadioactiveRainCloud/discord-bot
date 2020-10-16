@@ -13,32 +13,39 @@ class DevCmd(commands.Cog):
     @commands.is_owner()
     async def reload(self, ctx, *args):
         # Generate a message to be sent after completion
-        message = "Reload called. . .\n";
+        message = "Reload called.\n";
         # Iterate through arguments and reload them if they exist
         for arg in args:
-            # Generate the extension name from the argument
-            ext = f"cogs.{arg}";
-            # Add the extension reload attempt to the message
-            message += f"Reloading {ext}. . .\n"
-            # Try to reload the extension; add result to message
-            if ext in self.bot._extension_list:
-                try:
-                    self.bot.reload_extension(ext);
-                except commands.errors.ExtensionNotLoaded:
-                    message += f"{ext} not loaded.\n";
-                except commands.errors.ExtensionNotFound:
-                    message += f"{ext} not found.\n";
-                except commands.errors.ExtensionFailed:
-                    message += f"{ext} failed; execution error.\n";
-                except commands.errors.NoEntryPointError:
-                    message += f"{ext} has no setup function.\n";
-                else:
-                    message += f"{ext} reloaded.\n";
+            # Set up a variable to store the extension name.
+            ext = None;
+            # Search extension list for the argument
+            for extension in self.bot._extension_list:
+                if extension.endswith(arg):
+                    ext = extension;
+                    break;
+            if ext == None:
+                message += f"{arg} does not exist in loaded extensions.\n";
             else:
-                message += f"{ext} is not in the extension list.\n";
-            message += "\n"; # Separate individual attempts for easier reading
-
-        # Notify the user of the results
+                message += f"Reloading {ext}.\n"
+                # Try to reload the extension; add result to message
+                if ext in self.bot._extension_list:
+                    try:
+                        self.bot.reload_extension(ext);
+                    except commands.errors.ExtensionNotLoaded:
+                        message += f"{ext} not loaded.\n";
+                    except commands.errors.ExtensionNotFound:
+                        message += f"{ext} not found.\n";
+                    except commands.errors.ExtensionFailed as e:
+                        print(e);
+                        message += f"{ext} failed; execution error.\n";
+                    except commands.errors.NoEntryPointError:
+                        message += f"{ext} has no setup function.\n";
+                    else:
+                        message += f"{ext} reloaded.\n";
+                else:
+                    message += f"{ext} is not in the extension list.\n";
+        # Remove trailing newline and notify the user
+        message = message[:-1];
         print(message);
         await ctx.send(message);
 
@@ -62,8 +69,7 @@ class DevCmd(commands.Cog):
                 message += f"{ext} has no setup function.\n";
             else:
                 message += f"{ext} reloaded.\n";
-        message += "\n"; # Give me space to read
-
+        message = message[:-1]; #get rid of trailing newline
         # Notify the user
         await ctx.send(message);
         print(message);
@@ -72,9 +78,7 @@ class DevCmd(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reset_all(self, ctx):
-        message = """Begin reset of all extensions.
-        Unload extensions. . .
-        """;
+        message = "Begin reset of all extensions.\nUnloading extensions. . .\n";
         for ext in self.bot._extension_list:
             try:
                 self.bot.unload_extension(ext);
