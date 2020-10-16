@@ -3,6 +3,7 @@ from discord.ext import commands
 import logging
 import typing
 
+
 # Contains commands useful to server administration
 class AdminCmd(commands.Cog):
     # Initializes the cog
@@ -10,15 +11,15 @@ class AdminCmd(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @commands.has_permissions(ban_members = True)
-    async def ban(self,ctx,target: commands.MemberConverter,*words):
+    @commands.has_permissions(ban_members=True)
+    async def ban(self, ctx, target: commands.MemberConverter, *words):
         try:
             reason = " ".join(words)
             deleteMsgDays = 0
             guild = ctx.message.guild
             await guild.ban(target, reason=reason, delete_message_days=deleteMsgDays)
-            await ctx.send(str(target)+" banned"+", Reason: "+reason)
-            #TODO logger.debug(str(target)+" banned"+", Reason: "+reason)
+            await ctx.send(str(target) + " banned" + ", Reason: " + reason)
+            # TODO logger.debug(str(target)+" banned"+", Reason: "+reason)
         except discord.Forbidden as Forbidden:
             await ctx.send("You do not have permissions to do the actions required.")
         except discord.HTTPException as HTTPException:
@@ -71,8 +72,9 @@ class AdminCmd(commands.Cog):
     async def purge_error(self, ctx, error):
         if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
             await ctx.send("You did not pass all the required arguments for this command.")
-        else: 
-            pass #TODO logger.debug("unknown error when running ban command: "+ error)\
+        else:
+            pass  # TODO logger.debug("unknown error when running ban command: "+ error)\
+
 
 # setup command for the cog
 def setup(bot):
