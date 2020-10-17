@@ -2,6 +2,11 @@ import aiohttp
 import cbpro
 import discord
 import os
+import matplotlib.pyplot as plt
+import mplfinance as mpf
+import numpy as np
+import pandas as pd
+from io import BytesIO
 from dotenv import load_dotenv, find_dotenv
 from requests import Request, Session
 from discord.ext import commands
@@ -28,8 +33,8 @@ class CryptoCmd(commands.Cog):
             self.crypto_down_image = self.crypto_up_image = os.getcwd()
             self.crypto_up_image += "\\cogs\\cryptocurrencies\\"
             self.crypto_down_image = self.crypto_up_image
-            self.crypto_up_image += os.getenv("CRYPTO_UP", default=None)
-            self.crypto_down_image += os.getenv("CRYPTO_DOWN", default=None)
+            self.crypto_up_image += os.getenv("CRYPTO_UP", default="")
+            self.crypto_down_image += os.getenv("CRYPTO_DOWN", default="")
         else:
             self.bot.warning("crypto.env file not loading???")
         # Create dictionary to store data from coinmarketcap to reduce api calls
@@ -43,7 +48,7 @@ class CryptoCmd(commands.Cog):
         """Returns USD pair for given coinbase ticker symbol"""
         arg = arg.upper()  # Set the argument string for API's.
         title = f"{arg}-USD"  # Set the title for an embed
-        file = None  # Set up a file holder in case we use one.
+        file = None
         # Collect data needed to generate embed.
         if arg not in self.logo_url_dict.keys():
             await self._try_cmc_lookup(arg)
@@ -91,6 +96,7 @@ class CryptoCmd(commands.Cog):
         await ctx.send(file=file, embed=embed_message)
         return
 
+
     # Tries to find coinmarketcap data for the argument and put it in dictionary
     async def _try_cmc_lookup(self, arg):
         # Set the headers for the request.
@@ -114,6 +120,32 @@ class CryptoCmd(commands.Cog):
             except Exception as e:
                 self.bot.exception(e)
         return
+
+    @commands.command()
+    async def plot_crypto(self, ctx, arg="BTC"):
+        arg = arg.upper()  # Set the argument string for API
+        title = f"{arg}-USD"  # Set the title for an embed
+        rates = self.coinbase_client.get_product_historic_rates(
+            title, granularity=300
+        )
+        rates = np.array(rates)
+        x = rates[:, 0][:-13]
+        y = rates[:, (3, 4)][:-13].mean(1)
+        fig = plt.figure()
+        plt.plot(x, y)
+        plt.title(title.split("-")[0])
+        plt.xlabel("Last 24 Hours")
+        plt.ylabel("USD")
+        # plt.legend(["Low", "High"])
+        plt.xticks([])
+        plt.tight_layout()
+
+        plot_binary = BytesIO()
+        fig.savefig(plot_binary, format='png')
+        plot_binary.seek(0)
+        file = discord.File(fp=plot_binary, filename="plot.png")
+        await ctx.send(file=file)
+        plot_binary.close()
 
 
 # setup command for the cog
