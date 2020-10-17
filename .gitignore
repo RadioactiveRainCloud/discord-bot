@@ -2,7 +2,7 @@
 *.env
 
 # Ignore log files
-.log
+*.log
 
 
 # Byte-compiled / optimized / DLL files

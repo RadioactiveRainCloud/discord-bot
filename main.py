@@ -38,7 +38,10 @@ class DotEnvError(DiscordBotError):
 class DiscordBot(commands.Bot):
     def __init__(self, command_prefix="$", embed_color=0x3498db,
                  log_file="discord_bot.log"):
-        print("Initializing Discord bot. . .")
+        # Make the logger first.
+        self.logger = None
+        self._make_logger(log_file)
+        self.debug("Discord bot initializing.")
         super().__init__(command_prefix)
         self.embed_color = embed_color
         self.extension_list = list()
@@ -55,14 +58,13 @@ class DiscordBot(commands.Bot):
                 if item.suffix == ".py":
                     path = item.relative_to(folder_path.parent)
                     ext = str(path).replace("\\", ".")[:-3]
-                    print(ext)
                     self.extension_list.append(ext)
-                    print(f"added {ext} to extension list.")
+                    self.info(f"Added {ext} to extension list.")
         else:
-            warnings.warn("Warning: No cogs folder exists.", UserWarning)
+            self.warning("Warning: No cogs folder exists.")
         # Warn us if there were no cogs; bot will be useless.
         if not self.extension_list:
-            warnings.warn("Cogs folder has no .py extensions.", UserWarning)
+            self.warning("Cogs folder has no .py extensions.")
         return
 
     # Iterates through each extension in extension list.
@@ -72,9 +74,9 @@ class DiscordBot(commands.Bot):
                 self.load_extension(ext)
             except (ExtensionNotFound, ExtensionAlreadyLoaded,
                     ExtensionFailed, NoEntryPointError) as e:
-                print(f"In {ext}:\n{e}")
+                self.exception(f"In {ext}:\n{e}")
             else:
-                print(f"{ext} loaded successfully.")
+                self.info(f"{ext} loaded successfully.")
         return
 
     # Loads environment variables and returns the discord token.
@@ -84,26 +86,35 @@ class DiscordBot(commands.Bot):
             if not load_dotenv():
                 raise DotEnvError
             token = os.getenv("DISCORD_TOKEN")
-            print("Loaded environment variables from .env")
+            self.info("Loaded environment variable(s) from .env")
             if token is None:
                 raise TokenError
-            print("Discord token found in environment variables.")
+            self.info("Discord token found in environment variables.")
             return token
         except (TokenError, DotEnvError) as e:
-            print(e)
+            self.exception(e)
             sys.exit()
         return
 
-    def _make_logger(self, log_file: str) -> logging.Logger:
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.NOTSET)
+    # Creates a logger object for the bot to log itself
+    def _make_logger(self, log_file: str, verbose=False) -> None:
+        # Create the logger object
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.DEBUG)
+        # Set stream handler for console output
+        streamHandler = logging.StreamHandler()
+        if not verbose:
+            streamHandler.setLevel(logging.WARNING)
+        format_str = ">>%(levelname)s:\t%(message)s"
+        formatter = logging.Formatter(format_str)
+        streamHandler.setFormatter(formatter)
+        self.logger.addHandler(streamHandler)
+        # Set file handler for .log file
         fileHandler = logging.FileHandler(log_file)
-        fileHandler.setLevel(logging.DEBUG)
-        format_str = "%(asctime)s:%(levelname)s:%(name)s:%(message)s"
+        format_str = "%(asctime)s:%(name)s:%(levelname)s:\n\t%(message)s\n"
         formatter = logging.Formatter(format_str)
         fileHandler.setFormatter(formatter)
-
-        logger.addHandler(fileHandler)
+        self.logger.addHandler(fileHandler)
         return
 
     # Command to run the bot.
@@ -111,14 +122,46 @@ class DiscordBot(commands.Bot):
         super().run(self._load_token())
         return
 
+    # Used to generate logger debug message
+    def debug(self, msg: str) -> None:
+        self.logger.debug(msg)
+        return
+
+    # Used to generate logger info message
+    def info(self, msg: str) -> None:
+        self.logger.info(msg)
+        return
+
+    # Used to generate logger warning message
+    def warning(self, msg: str) -> None:
+        self.logger.warning(msg)
+        return
+
+    # Used to generate logger error message
+    def error(self, msg: str) -> None:
+        self.logger.error(msg)
+        return
+
+    # Used to generate logger critical message
+    def critical(self, msg: str) -> None:
+        self.logger.critical(msg)
+        return
+
+    # Used to generate logger exception message
+    def exception(self, msg: str) -> None:
+        self.logger.exception(msg)
+        return
+
     # Reports connection to discord.
     async def on_connect(self):
-        print("Successfully connected to discord.")
+        self.info("Successfully connected to discord.")
         return
 
     # Reports that bot made it online.
     async def on_ready(self):
-        print(f"Logged in as {self.user}.")
+        msg = f"Logged in as {self.user}."
+        self.info(msg)
+        print(msg)
         return
 
 
