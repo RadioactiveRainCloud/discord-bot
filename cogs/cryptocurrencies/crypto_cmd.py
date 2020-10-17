@@ -39,6 +39,7 @@ class CryptoCmd(commands.Cog):
     # arg should be a ticker symbol for the desired cryptocurrency.
     @commands.command()
     async def cbpro(self, ctx, arg="BTC"):
+        """Returns USD pair for given coinbase ticker symbol"""
         arg = arg.upper()  # Set the argument string for API's.
         title = f"{arg}-USD"  # Set the title for an embed
         file = None  # Set up a file holder in case we use one.
