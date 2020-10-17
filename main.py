@@ -28,7 +28,7 @@ class DotEnvError(DiscordBotError):
 
 # The bot's class definition
 class DiscordBot(commands.Bot):
-    def __init__(self, command_prefix="bb!", embed_color=0x3498db):
+    def __init__(self, command_prefix="$", embed_color=0x3498db):
         print("Initializing Discord bot. . .")
         super().__init__(command_prefix)
         self.embed_color = embed_color
