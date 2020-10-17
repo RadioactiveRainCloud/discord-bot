@@ -31,9 +31,10 @@ class CryptoCmd(commands.Cog):
             self.crypto_up_image += os.getenv("CRYPTO_UP", default=None)
             self.crypto_down_image += os.getenv("CRYPTO_DOWN", default=None)
         else:
-            print(".env file not loading???")
+            self.bot.warning("crypto.env file not loading???")
         # Create dictionary to store data from coinmarketcap to reduce api calls
         self.logo_url_dict = dict()
+        return
 
     # Command for grabbing a crypto's USD price stats.
     # arg should be a ticker symbol for the desired cryptocurrency.
@@ -88,6 +89,7 @@ class CryptoCmd(commands.Cog):
             embed_message.set_thumbnail(url=self.logo_url_dict[arg])
         # Send the embed to discord
         await ctx.send(file=file, embed=embed_message)
+        return
 
     # Tries to find coinmarketcap data for the argument and put it in dictionary
     async def _try_cmc_lookup(self, arg):
@@ -108,11 +110,13 @@ class CryptoCmd(commands.Cog):
                     try:
                         self.logo_url_dict[arg] = response["data"][arg]["logo"]
                     except Exception as e:
-                        print(e)
+                        self.bot.exception(e)
             except Exception as e:
-                print(e)
+                self.bot.exception(e)
+        return
 
 
 # setup command for the cog
 def setup(bot):
     bot.add_cog(CryptoCmd(bot))
+    return

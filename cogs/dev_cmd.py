@@ -13,13 +13,13 @@ class DevCmd(commands.Cog):
     # Initializes the cog.
     def __init__(self, bot):
         self.bot = bot
+        return
 
-    # Command used to reload an extension from discord.
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx, arg):
         """Reloads a single extension"""
-        print(f"Reloading {arg} extension.")
+        self.bot.warning(f"Reloading {arg} extension.")
         msg = ""
         # Search extension list for the argument
         for ext in self.bot.extension_list:
@@ -35,15 +35,15 @@ class DevCmd(commands.Cog):
                     break
         else:  # No break statement happened --> arg wasn't in extension list
             msg = f"{arg} was not found in the loaded extension list."
-        print(msg)
+        self.bot.info(msg)
         await ctx.send(msg)
+        return
 
-    # Reloads all extensions in bot's extension list.
     @commands.command()
     @commands.is_owner()
     async def reload_all(self, ctx):
-        """Reloads all current extensions"""
-        print("Reloading all extensions.")
+        """Reloads all currentl running extensions"""
+        self.bot.warning("Reloading all extensions.")
         msg = ""
         # Iterate through all extensions in bot's extension list and reload them
         for ext in self.bot.extension_list:
@@ -55,15 +55,16 @@ class DevCmd(commands.Cog):
             else:
                 msg += f"{ext} reloaded.\n"
         msg = msg[:-1]  # get rid of trailing newline
-        print(msg)
+        self.bot.info(msg)
         await ctx.send(msg)
+        return
 
-    # Resets all extensions, rebuilding the extension list from scratch
     @commands.command()
     @commands.is_owner()
     async def reset_all(self, ctx):
         """Rebuilds the extension list from scratch"""
-        print("Begin reset of all extensions.\nUnloading extensions.\n")
+        self.bot.warning(
+            "Begin reset of all extensions. Unloading extensions.")
         msg = ""
         for ext in self.bot.extension_list:
             try:
@@ -74,14 +75,33 @@ class DevCmd(commands.Cog):
         # Rebuild the extension list from scratch and load the extensions from
         # the generated extension list.
         msg += "Rebuilding extension list from scratch.\n"
-        print(msg[:-1])  # The following commands already log messages
+        self.bot.info(msg[:-1])  # The following commands already log messages
         self.bot._build_extension_list()
         self.bot._load_extensions()
         for ext in self.bot.extension_list:
             msg += f"{ext}\n"
         await ctx.send(msg[:-1])
+        return
+
+    @commands.command()
+    @commands.is_owner()
+    async def test_logs(self, ctx):
+        """Generates test entries in the logs"""
+        self.bot.debug("TESTING TESTING TESTING")
+        self.bot.info("This is a test message.")
+        self.bot.warning("This is a warning, but we're still fine.")
+        self.bot.error("Error, uh it's getting spicy in here.")
+        self.bot.critical("Critical, shit has hit all of the fans.")
+        try:
+            assert False
+        except AssertionError as e:
+            self.bot.exception(e)
+        self.bot.warning("End of test.")
+        await ctx.send("Test completed. Check the logs.")
+        return
 
 
 # setup command for the cog
 def setup(bot):
     bot.add_cog(DevCmd(bot))
+    return

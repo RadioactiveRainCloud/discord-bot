@@ -1,0 +1,436 @@
+2020-10-17 03:15:39,596:DEBUG:__main__:Initializing Discord bot. . .
+2020-10-17 03:59:58,054:DEBUG:__main__:Initializing Discord bot. . .
+2020-10-17 03:59:58,055:INFO:__main__:Info
+2020-10-17 03:59:58,055:WARNING:__main__:Warning
+2020-10-17 03:59:58,055:ERROR:__main__:Error
+2020-10-17 03:59:58,055:CRITICAL:__main__:Critical
+2020-10-17 04:02:31,061:__main__:DEBUG
+	:Initializing Discord bot. . .
+2020-10-17 04:02:31,061:__main__:INFO
+	:Info
+2020-10-17 04:02:31,061:__main__:WARNING
+	:Warning
+2020-10-17 04:02:31,062:__main__:ERROR
+	:Error
+2020-10-17 04:02:31,062:__main__:CRITICAL
+	:Critical
+2020-10-17 04:05:46,873:__main__:DEBUG
+	:Initializing Discord bot. . . debugging
+2020-10-17 04:05:46,873:__main__:INFO
+	:Info message goes here hell yeah.
+2020-10-17 04:05:46,873:__main__:WARNING
+	:This is a warning, but we're still fine.
+2020-10-17 04:05:46,873:__main__:ERROR
+	:Error, uh it's getting spicy in here
+2020-10-17 04:05:46,874:__main__:CRITICAL
+	:Critical shit has hit all of the fans
+2020-10-17 04:10:24,984:__main__:DEBUG:
+	Initializing Discord bot. . . debugging
+2020-10-17 04:10:24,985:__main__:INFO:
+	Info message goes here hell yeah.
+2020-10-17 04:10:24,985:__main__:WARNING:
+	This is a warning, but we're still fine.
+2020-10-17 04:10:24,985:__main__:ERROR:
+	Error, uh it's getting spicy in here
+2020-10-17 04:10:24,985:__main__:CRITICAL:
+	Critical shit has hit all of the fans
+2020-10-17 04:23:15,392:__main__:DEBUG:
+	Initializing Discord bot. . . debugging
+2020-10-17 04:23:15,392:__main__:INFO:
+	Info message goes here hell yeah.
+2020-10-17 04:23:15,392:__main__:WARNING:
+	This is a warning, but we're still fine.
+2020-10-17 04:23:15,392:__main__:ERROR:
+	Error, uh it's getting spicy in here
+2020-10-17 04:23:15,392:__main__:CRITICAL:
+	Critical shit has hit all of the fans
+2020-10-17 04:25:42,033:__main__:DEBUG:
+	Initializing Discord bot. . . debugging
+
+2020-10-17 04:25:42,033:__main__:INFO:
+	Info message goes here hell yeah.
+
+2020-10-17 04:25:42,033:__main__:WARNING:
+	This is a warning, but we're still fine.
+
+2020-10-17 04:25:42,033:__main__:ERROR:
+	Error, uh it's getting spicy in here
+
+2020-10-17 04:25:42,033:__main__:CRITICAL:
+	Critical shit has hit all of the fans
+
+2020-10-17 04:26:54,286:__main__:DEBUG:
+	Initializing Discord bot. . . debugging
+
+2020-10-17 04:26:54,286:__main__:INFO:
+	Info message goes here hell yeah.
+
+2020-10-17 04:26:54,286:__main__:WARNING:
+	This is a warning, but we're still fine.
+
+2020-10-17 04:26:54,286:__main__:ERROR:
+	Error, uh it's getting spicy in here
+
+2020-10-17 04:26:54,287:__main__:CRITICAL:
+	Critical shit has hit all of the fans
+
+2020-10-17 04:27:57,639:__main__:DEBUG:
+	Initializing Discord bot. . . debugging
+
+2020-10-17 04:27:57,640:__main__:INFO:
+	Info message goes here hell yeah.
+
+2020-10-17 04:27:57,640:__main__:WARNING:
+	This is a warning, but we're still fine.
+
+2020-10-17 04:27:57,640:__main__:ERROR:
+	Error, uh it's getting spicy in here
+
+2020-10-17 04:27:57,640:__main__:CRITICAL:
+	Critical shit has hit all of the fans
+
+2020-10-17 04:29:40,877:__main__:DEBUG:
+	Initializing Discord bot. . . debugging
+
+2020-10-17 04:29:40,877:__main__:INFO:
+	Info message goes here hell yeah.
+
+2020-10-17 04:29:40,877:__main__:WARNING:
+	This is a warning, but we're still fine.
+
+2020-10-17 04:29:40,877:__main__:ERROR:
+	Error, uh it's getting spicy in here
+
+2020-10-17 04:29:40,877:__main__:CRITICAL:
+	Critical shit has hit all of the fans
+
+2020-10-17 04:47:52,153:__main__:DEBUG:
+	Initializing Discord bot. . . debugging
+
+2020-10-17 04:47:52,154:__main__:INFO:
+	Info message goes here hell yeah.
+
+2020-10-17 04:47:52,154:__main__:WARNING:
+	This is a warning, but we're still fine.
+
+2020-10-17 04:47:52,154:__main__:ERROR:
+	Error, uh it's getting spicy in here
+
+2020-10-17 04:47:52,154:__main__:CRITICAL:
+	Critical shit has hit all of the fans
+
+2020-10-17 04:47:52,154:__main__:ERROR:
+	
+Traceback (most recent call last):
+  File "main.py", line 50, in __init__
+    assert False
+AssertionError
+2020-10-17 05:37:23,649:__main__:DEBUG:
+	TESTING TESTING TESTING
+
+2020-10-17 05:37:23,649:__main__:INFO:
+	This is a test message.
+
+2020-10-17 05:39:30,752:__main__:DEBUG:
+	TESTING TESTING TESTING
+
+2020-10-17 05:39:30,752:__main__:INFO:
+	This is a test message.
+
+2020-10-17 05:40:33,370:__main__:DEBUG:
+	TESTING TESTING TESTING
+
+2020-10-17 05:40:33,371:__main__:INFO:
+	This is a test message.
+
+2020-10-17 05:40:33,371:__main__:WARNING:
+	This is a warning, but we're still fine.
+
+2020-10-17 05:40:33,371:__main__:ERROR:
+	Error, uh it's getting spicy in here.
+
+2020-10-17 05:40:33,371:__main__:CRITICAL:
+	Critical, shit has hit all of the fans.
+
+2020-10-17 05:40:33,372:__main__:ERROR:
+	
+Traceback (most recent call last):
+  File "C:\Users\mimsa\PythonProjects\discord-bot\cogs\dev_cmd.py", line 95, in test_logs
+    assert False
+AssertionError
+2020-10-17 05:40:33,372:__main__:WARNING:
+	End of test.
+
+2020-10-17 05:58:14,207:__main__:DEBUG:
+	Discord bot initializing.
+
+2020-10-17 05:58:14,213:__main__:INFO:
+	Added cogs.admin_cmd to extension list.
+
+2020-10-17 05:58:14,213:__main__:INFO:
+	Added cogs.db_experiment to extension list.
+
+2020-10-17 05:58:14,213:__main__:INFO:
+	Added cogs.dev_cmd to extension list.
+
+2020-10-17 05:58:14,213:__main__:INFO:
+	Added cogs.truth_or_dare_cmd to extension list.
+
+2020-10-17 05:58:14,213:__main__:INFO:
+	Added cogs.cryptocurrencies.crypto_cmd to extension list.
+
+2020-10-17 05:58:14,215:__main__:INFO:
+	cogs.admin_cmd loaded successfully.
+
+2020-10-17 05:58:14,218:__main__:ERROR:
+	In cogs.db_experiment:
+Extension 'cogs.db_experiment' has no 'setup' function.
+Traceback (most recent call last):
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 613, in _load_from_module_spec
+    setup = getattr(lib, 'setup')
+AttributeError: module 'cogs.db_experiment' has no attribute 'setup'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "main.py", line 74, in _load_extensions
+    self.load_extension(ext)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 616, in _load_from_module_spec
+    raise errors.NoEntryPointError(key)
+discord.ext.commands.errors.NoEntryPointError: Extension 'cogs.db_experiment' has no 'setup' function.
+2020-10-17 05:58:14,221:__main__:INFO:
+	cogs.dev_cmd loaded successfully.
+
+2020-10-17 05:58:14,222:__main__:INFO:
+	cogs.truth_or_dare_cmd loaded successfully.
+
+2020-10-17 05:58:14,320:__main__:INFO:
+	cogs.cryptocurrencies.crypto_cmd loaded successfully.
+
+2020-10-17 05:58:14,320:__main__:INFO:
+	Loaded environment variable(s) from .env
+
+2020-10-17 05:58:14,320:__main__:INFO:
+	Discord token found in environment variables.
+
+2020-10-17 05:58:14,741:__main__:INFO:
+	Successfully connected to discord.
+
+2020-10-17 05:58:16,743:__main__:INFO:
+	Logged in as OpenBot#3056.
+
+2020-10-17 06:13:55,358:__main__:DEBUG:
+	Discord bot initializing.
+
+2020-10-17 06:13:55,364:__main__:INFO:
+	Added cogs.admin_cmd to extension list.
+
+2020-10-17 06:13:55,364:__main__:INFO:
+	Added cogs.db_experiment to extension list.
+
+2020-10-17 06:13:55,364:__main__:INFO:
+	Added cogs.dev_cmd to extension list.
+
+2020-10-17 06:13:55,364:__main__:INFO:
+	Added cogs.truth_or_dare_cmd to extension list.
+
+2020-10-17 06:13:55,364:__main__:INFO:
+	Added cogs.cryptocurrencies.crypto_cmd to extension list.
+
+2020-10-17 06:13:55,366:__main__:INFO:
+	cogs.admin_cmd loaded successfully.
+
+2020-10-17 06:13:55,370:__main__:ERROR:
+	In cogs.db_experiment:
+Extension 'cogs.db_experiment' has no 'setup' function.
+Traceback (most recent call last):
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 613, in _load_from_module_spec
+    setup = getattr(lib, 'setup')
+AttributeError: module 'cogs.db_experiment' has no attribute 'setup'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "main.py", line 74, in _load_extensions
+    self.load_extension(ext)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 616, in _load_from_module_spec
+    raise errors.NoEntryPointError(key)
+discord.ext.commands.errors.NoEntryPointError: Extension 'cogs.db_experiment' has no 'setup' function.
+2020-10-17 06:13:55,375:__main__:INFO:
+	cogs.dev_cmd loaded successfully.
+
+2020-10-17 06:13:55,379:__main__:INFO:
+	cogs.truth_or_dare_cmd loaded successfully.
+
+2020-10-17 06:13:55,505:__main__:INFO:
+	cogs.cryptocurrencies.crypto_cmd loaded successfully.
+
+2020-10-17 06:13:55,506:__main__:INFO:
+	Loaded environment variable(s) from .env
+
+2020-10-17 06:13:55,506:__main__:INFO:
+	Discord token found in environment variables.
+
+2020-10-17 06:13:55,919:__main__:INFO:
+	Successfully connected to discord.
+
+2020-10-17 06:13:57,920:__main__:INFO:
+	Logged in as OpenBot#3056.
+
+2020-10-17 06:16:40,176:__main__:DEBUG:
+	Discord bot initializing.
+
+2020-10-17 06:16:40,181:__main__:INFO:
+	Added cogs.admin_cmd to extension list.
+
+2020-10-17 06:16:40,181:__main__:INFO:
+	Added cogs.db_experiment to extension list.
+
+2020-10-17 06:16:40,181:__main__:INFO:
+	Added cogs.dev_cmd to extension list.
+
+2020-10-17 06:16:40,181:__main__:INFO:
+	Added cogs.truth_or_dare_cmd to extension list.
+
+2020-10-17 06:16:40,182:__main__:INFO:
+	Added cogs.cryptocurrencies.crypto_cmd to extension list.
+
+2020-10-17 06:16:40,183:__main__:INFO:
+	cogs.admin_cmd loaded successfully.
+
+2020-10-17 06:16:40,186:__main__:ERROR:
+	In cogs.db_experiment:
+Extension 'cogs.db_experiment' has no 'setup' function.
+Traceback (most recent call last):
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 613, in _load_from_module_spec
+    setup = getattr(lib, 'setup')
+AttributeError: module 'cogs.db_experiment' has no attribute 'setup'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "main.py", line 74, in _load_extensions
+    self.load_extension(ext)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 616, in _load_from_module_spec
+    raise errors.NoEntryPointError(key)
+discord.ext.commands.errors.NoEntryPointError: Extension 'cogs.db_experiment' has no 'setup' function.
+2020-10-17 06:16:40,191:__main__:INFO:
+	cogs.dev_cmd loaded successfully.
+
+2020-10-17 06:16:40,194:__main__:INFO:
+	cogs.truth_or_dare_cmd loaded successfully.
+
+2020-10-17 06:16:40,310:__main__:INFO:
+	cogs.cryptocurrencies.crypto_cmd loaded successfully.
+
+2020-10-17 06:16:40,311:__main__:INFO:
+	Loaded environment variable(s) from .env
+
+2020-10-17 06:16:40,311:__main__:INFO:
+	Discord token found in environment variables.
+
+2020-10-17 06:16:40,701:__main__:INFO:
+	Successfully connected to discord.
+
+2020-10-17 06:16:42,701:__main__:INFO:
+	Logged in as OpenBot#3056.
+
+2020-10-17 06:16:56,332:__main__:WARNING:
+	Reloading crypto_cmd extension.
+
+2020-10-17 06:16:56,335:__main__:INFO:
+	cogs.cryptocurrencies.crypto_cmd successfully reloaded.
+
+2020-10-17 06:17:04,531:__main__:WARNING:
+	Reloading all extensions.
+
+2020-10-17 06:17:04,540:__main__:INFO:
+	cogs.admin_cmd reloaded.
+In cogs.db_experiment:
+Extension 'cogs.db_experiment' has not been loaded.
+cogs.dev_cmd reloaded.
+cogs.truth_or_dare_cmd reloaded.
+cogs.cryptocurrencies.crypto_cmd reloaded.
+
+2020-10-17 06:17:11,761:__main__:WARNING:
+	Begin reset of all extensions. Unloading extensions.
+
+2020-10-17 06:17:11,763:__main__:INFO:
+	Extension 'cogs.db_experiment' has not been loaded.
+Rebuilding extension list from scratch.
+
+2020-10-17 06:17:11,763:__main__:INFO:
+	Added cogs.admin_cmd to extension list.
+
+2020-10-17 06:17:11,763:__main__:INFO:
+	Added cogs.db_experiment to extension list.
+
+2020-10-17 06:17:11,763:__main__:INFO:
+	Added cogs.dev_cmd to extension list.
+
+2020-10-17 06:17:11,763:__main__:INFO:
+	Added cogs.truth_or_dare_cmd to extension list.
+
+2020-10-17 06:17:11,764:__main__:INFO:
+	Added cogs.cryptocurrencies.crypto_cmd to extension list.
+
+2020-10-17 06:17:11,766:__main__:INFO:
+	cogs.admin_cmd loaded successfully.
+
+2020-10-17 06:17:11,767:__main__:ERROR:
+	In cogs.db_experiment:
+Extension 'cogs.db_experiment' has no 'setup' function.
+Traceback (most recent call last):
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 613, in _load_from_module_spec
+    setup = getattr(lib, 'setup')
+AttributeError: module 'cogs.db_experiment' has no attribute 'setup'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "main.py", line 74, in _load_extensions
+    self.load_extension(ext)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 664, in load_extension
+    self._load_from_module_spec(spec, name)
+  File "C:\Users\mimsa\AppData\Local\Programs\Python\Python38-32\lib\site-packages\discord\ext\commands\bot.py", line 616, in _load_from_module_spec
+    raise errors.NoEntryPointError(key)
+discord.ext.commands.errors.NoEntryPointError: Extension 'cogs.db_experiment' has no 'setup' function.
+2020-10-17 06:17:11,769:__main__:INFO:
+	cogs.dev_cmd loaded successfully.
+
+2020-10-17 06:17:11,771:__main__:INFO:
+	cogs.truth_or_dare_cmd loaded successfully.
+
+2020-10-17 06:17:11,773:__main__:INFO:
+	cogs.cryptocurrencies.crypto_cmd loaded successfully.
+
+2020-10-17 06:17:18,075:__main__:DEBUG:
+	TESTING TESTING TESTING
+
+2020-10-17 06:17:18,075:__main__:INFO:
+	This is a test message.
+
+2020-10-17 06:17:18,076:__main__:WARNING:
+	This is a warning, but we're still fine.
+
+2020-10-17 06:17:18,086:__main__:ERROR:
+	Error, uh it's getting spicy in here.
+
+2020-10-17 06:17:18,102:__main__:CRITICAL:
+	Critical, shit has hit all of the fans.
+
+2020-10-17 06:17:18,104:__main__:ERROR:
+	
+Traceback (most recent call last):
+  File "C:\Users\mimsa\PythonProjects\discord-bot\cogs\dev_cmd.py", line 96, in test_logs
+    assert False
+AssertionError
+2020-10-17 06:17:18,116:__main__:WARNING:
+	End of test.
+
