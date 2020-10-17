@@ -17,38 +17,47 @@ class TruthOrDareCmd(commands.Cog):
         self.players = {}
         self.revenge = {}
         self.last_roll = {}
+        self.text_channel = {}
+        self.voice_channel = {}
 
     @commands.command()
     async def tod_join(self, ctx, *args):
         """ Join a game of Truth or Dare. """
-        channel_names = [c.name for c in ctx.guild.channels]
-        role_names = [r.name for r in ctx.guild.roles]
+        text_names = [c.name for c in ctx.guild.text_channels]
+        voice_names = [c.name for c in ctx.guild.voice_channels]
+        overwrites = {
+            ctx.guild.default_role: discord.PermissionOverwrite(
+                read_messages=False, send_messages=False
+            ),
+            self.bot.user: discord.PermissionOverwrite(
+                read_messages=True, send_messages=True
+            ),
+            ctx.author: discord.PermissionOverwrite(
+                read_messages=True, send_messages=True, connect=True,
+                speak=True
+            )
+        }
 
-        # Check to see if the roles exist
-        if "tod_Player" not in role_names:
-            message = "Something is wrong...\n" \
-                      "Make sure there is a `tod_Player` role!"
-            await ctx.send(message)
-            return
+        # Deletes the channels if they exist
+        if not self.players.get(ctx.guild.id):
+            if "truth-or-dare" in text_names:
+                text = ctx.guild.text_channels[text_names.index(
+                    "truth-or-dare"
+                )]
+                await text.delete()
+            if "secret-voice" in voice_names:
+                voice = ctx.guild.voice_channels[voice_names.index(
+                    "secret-voice"
+                )]
+                await voice.delete()
 
-        # Creates the channels if they don't exist
-        if "truth-or-dare" not in channel_names:
-            default = ctx.guild.default_role
-            player = discord.utils.get(ctx.guild.roles, name="tod_Player")
-            bots = self.bot.user
-            overwrites = {
-                default: discord.PermissionOverwrite(read_messages=False,
-                                                     send_messages=False),
-                bots: discord.PermissionOverwrite(read_messages=True,
-                                                  send_messages=True),
-                player: discord.PermissionOverwrite(read_messages=True,
-                                                    send_messages=True,
-                                                    connect=True, speak=True)
-            }
-            await ctx.guild.create_text_channel('truth-or-dare',
-                                                overwrites=overwrites)
-            await ctx.guild.create_voice_channel('secret-voice',
-                                                 overwrites=overwrites)
+        # Creates the channels
+        self.text_channel[ctx.guild.id] = await ctx.guild.create_text_channel(
+            'truth-or-dare', overwrites=overwrites
+        )
+        self.voice_channel[ctx.guild.id] = await ctx.guild.create_voice_channel(
+            'secret-voice', overwrites=overwrites
+        )
 
         # Makes the first player the Game Master
         if not self.players.get(ctx.guild.id):
@@ -56,14 +65,10 @@ class TruthOrDareCmd(commands.Cog):
             global GAME_MASTER
             GAME_MASTER[ctx.guild.id] = ctx.author.id
 
-        # Adds the tod_Player role
-        role = discord.utils.get(ctx.guild.roles, name="tod_Player")
-        await ctx.author.add_roles(role)
-
         if ctx.author not in self.players.get(ctx.guild.id, []):
             self.players[ctx.guild.id].append(ctx.author)
             message = f"{ctx.author.mention} has been added to the game!"
-            await ctx.send(message)
+            await self.text_channel[ctx.guild.id].send(message)
         else:
             message = f"{ctx.author.mention} has already joined!"
             await ctx.send(message)
@@ -71,21 +76,23 @@ class TruthOrDareCmd(commands.Cog):
     @tod_join.error
     async def tod_join_error(self, ctx, *args):
         message = "Something is wrong...\n" \
-                  "Make sure I have permission to create channels and " \
-                  "manage roles."
+                  "Make sure I have permission to manage channels."
         await ctx.send(message)
 
     @commands.command()
-    @commands.has_role("tod_Player")
     async def tod_leave(self, ctx, *args):
         """ Leave a game of Truth or Dare. """
-        role = discord.utils.get(ctx.guild.roles, name="tod_Player")
-        await ctx.author.remove_roles(role)
+        await self.text_channel[ctx.guild.id].set_permissions(
+            ctx.author, read_messages=False, send_messages=False
+        )
+        await self.voice_channel[ctx.guild.id].set_permissions(
+            ctx.author, connect=False, speak=False
+        )
 
         try:
             self.players[ctx.guild.id].remove(ctx.author)
         except ValueError:
-            pass
+            await ctx.send(f"{ctx.author.mention}, you're not playing!")
 
         global GAME_MASTER
         if ctx.author.id == GAME_MASTER.get(ctx.guild.id) and \
@@ -101,36 +108,47 @@ class TruthOrDareCmd(commands.Cog):
         if not self.players.get(ctx.guild.id):
             await ctx.send("There are currently no users playing.")
             return
+        elif not args:
+            message = "Either mention the players to remove or specify `all`."
+            await ctx.send(message)
+            return
 
         if "all" in args:
             await self._clean_up(ctx)
             return
 
-        for name in args:
-            message = ""
-            size = len(self.players.get(ctx.guild.id, []))
-            author = ctx.author.mention
-            if author.replace("!", "") == name.replace("!", "") and size == 1:
-                await self._clean_up(ctx)
-                return
-            elif author.replace("!", "") == name.replace("!", ""):
-                self.players[ctx.guild.id].remove(ctx.author)
-                await self._assign_new_game_master(ctx)
+        to_remove = []
+        for arg in args:
+            for player in self.players[ctx.guild.id]:
+                if str(player.id) in arg:
+                    to_remove.append(player)
+                    break
+
+        if not to_remove:
+            await ctx.send("No one was removed.")
+            return
+
+        for player in to_remove:
+            await self.text_channel[ctx.guild.id].set_permissions(
+                player, read_messages=False, send_messages=False
+            )
+            await self.voice_channel[ctx.guild.id].set_permissions(
+                player, connect=False, speak=False
+            )
+            self.players[ctx.guild.id].remove(player)
+            global GAME_MASTER
+            if player.id == GAME_MASTER[ctx.guild.id]:
+                try:
+                    await self._assign_new_game_master(ctx)
+                except IndexError:
+                    await ctx.send("Cleaning up...")
             else:
-                to_remove = None
-                for user in self.players[ctx.guild.id]:
-                    if name == user.mention:
-                        to_remove = user
-                        role = discord.utils.get(ctx.guild.roles,
-                                                 name="tod_Player")
-                        await user.remove_roles(role)
-                        message = f"{name} has been removed from the game!"
-                        break
-                if to_remove is None:
-                    message = f"{name} is not in the game!"
-                else:
-                    self.players[ctx.guild.id].remove(to_remove)
+                message = f"{player.mention} has been removed from the game!"
                 await ctx.send(message)
+
+        if not self.players[ctx.guild.id]:
+            await ctx.send("Cleaning up...")
+            await self._clean_up(ctx)
 
     @tod_remove.error
     async def tod_remove_error(self, ctx, *args):
@@ -215,25 +233,13 @@ class TruthOrDareCmd(commands.Cog):
             await ctx.send(f"{ctx.author.mention}, you're not playing!")
 
     async def _clean_up(self, ctx):
-        for user in self.players.get(ctx.guild.id, []):
-            role = discord.utils.get(ctx.guild.roles, name="tod_Player")
-            await user.remove_roles(role)
-        for channel in ctx.guild.channels:
-            if channel.name.startswith("truth-or-dare"):
-                await channel.delete()
-                break
-        for channel in ctx.guild.channels:
-            if channel.name.startswith("secret-voice"):
-                await channel.delete()
-                break
+        await self.text_channel[ctx.guild.id].delete()
+        self.text_channel[ctx.guild.id] = None
+        await self.voice_channel[ctx.guild.id].delete()
+        self.voice_channel[ctx.guild.id] = None
         self.players[ctx.guild.id] = []
         global GAME_MASTER
         GAME_MASTER[ctx.guild.id] = None
-        try:
-            message = "The game is over!"
-            await ctx.send(message)
-        except discord.errors.NotFound:
-            pass
 
     async def _assign_new_game_master(self, ctx):
         global GAME_MASTER
