@@ -20,15 +20,14 @@ class DevCmd(commands.Cog):
     async def reload(self, ctx, arg):
         """Reloads a single extension"""
         self.bot.warning(f"Reloading {arg} extension.")
-        msg = ""
         # Search extension list for the argument
-        for ext in self.bot.extension_list:
+        for ext in self.bot.extensions.keys():
             if ext.endswith(arg):
                 try:
                     self.bot.reload_extension(ext)
                 except (ExtensionNotLoaded, ExtensionNotFound,
                         ExtensionFailed, NoEntryPointError) as e:
-                    msg = f"In {ext}:\n{e}"
+                    msg = f"For {ext}:\n{e}"
                 else:
                     msg = f"{ext} successfully reloaded."
                 finally:
@@ -46,7 +45,8 @@ class DevCmd(commands.Cog):
         self.bot.warning("Reloading all extensions.")
         msg = ""
         # Iterate through all extensions in bot's extension list and reload them
-        for ext in self.bot.extension_list:
+        ext_list = list(self.bot.extensions.keys())
+        for ext in ext_list:
             try:
                 self.bot.reload_extension(ext)
             except (ExtensionNotLoaded, ExtensionNotFound,
@@ -66,19 +66,14 @@ class DevCmd(commands.Cog):
         self.bot.warning(
             "Begin reset of all extensions. Unloading extensions.")
         msg = ""
-        for ext in self.bot.extension_list:
+        while len(self.bot.extensions) > 0:
             try:
-                self.bot.unload_extension(ext)
+                self.bot.unload_extension(next(iter(self.bot.extensions)))
             except ExtensionNotLoaded as e:
                 msg += f"{e}\n"
-        self.bot.extension_list.clear()
-        # Rebuild the extension list from scratch and load the extensions from
-        # the generated extension list.
-        msg += "Rebuilding extension list from scratch.\n"
-        self.bot.info(msg[:-1])  # The following commands already log messages
-        self.bot._build_extension_list()
+        # Reset the extensions
         self.bot._load_extensions()
-        for ext in self.bot.extension_list:
+        for ext in self.bot.extensions.keys():
             msg += f"{ext}\n"
         await ctx.send(msg[:-1])
         return

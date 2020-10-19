@@ -2,8 +2,6 @@ import discord
 import logging
 import os
 import sys
-from typing import List
-import warnings
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext.commands.errors import (
@@ -44,13 +42,11 @@ class DiscordBot(commands.Bot):
         self.debug("Discord bot initializing.")
         super().__init__(command_prefix)
         self.embed_color = embed_color
-        self.extension_list = list()
-        self._build_extension_list()
         self._load_extensions()
         return
 
     # Builds the bot's extension list from the files in /cogs subdirectory.
-    def _build_extension_list(self) -> None:
+    def _load_extensions(self) -> None:
         folder_path = Path("cogs")
         if folder_path.exists():
             # for files ending in .py, format their names and add to the list.
@@ -58,25 +54,18 @@ class DiscordBot(commands.Bot):
                 if item.suffix == ".py":
                     path = item.relative_to(folder_path.parent)
                     ext = str(path).replace("\\", ".")[:-3]
-                    self.extension_list.append(ext)
-                    self.info(f"Added {ext} to extension list.")
+                    try:
+                        self.load_extension(ext)
+                    except (ExtensionNotFound, ExtensionAlreadyLoaded,
+                            ExtensionFailed, NoEntryPointError) as e:
+                        self.exception(f"In {ext}:\n{e}")
+                    else:
+                        self.info(f"{ext} loaded successfully.")
         else:
-            self.warning("Warning: No cogs folder exists.")
+            self.warning("No cogs folder exists.")
         # Warn us if there were no cogs; bot will be useless.
-        if not self.extension_list:
-            self.warning("Cogs folder has no .py extensions.")
-        return
-
-    # Iterates through each extension in extension list.
-    def _load_extensions(self) -> None:
-        for ext in self.extension_list:
-            try:
-                self.load_extension(ext)
-            except (ExtensionNotFound, ExtensionAlreadyLoaded,
-                    ExtensionFailed, NoEntryPointError) as e:
-                self.exception(f"In {ext}:\n{e}")
-            else:
-                self.info(f"{ext} loaded successfully.")
+        if not self.extensions:
+            self.warning("No extensions were loaded.")
         return
 
     # Loads environment variables and returns the discord token.
@@ -94,7 +83,6 @@ class DiscordBot(commands.Bot):
         except (TokenError, DotEnvError) as e:
             self.exception(e)
             sys.exit()
-        return
 
     # Creates a logger object for the bot to log itself
     def _make_logger(self, log_file: str, verbose=False) -> None:
