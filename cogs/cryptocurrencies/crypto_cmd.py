@@ -123,11 +123,15 @@ class CryptoCmd(commands.Cog):
 
     @commands.command()
     async def plot_crypto(self, ctx, arg="BTC"):
+        """ Plot the 24 hour market price of a cryptocurrency (in USD). """
         arg = arg.upper()  # Set the argument string for API
         title = f"{arg}-USD"  # Set the title for an embed
         rates = self.coinbase_client.get_product_historic_rates(
             title, granularity=300
         )
+        if type(rates) == dict:  # if the argument is invalid
+            await ctx.send(f"No data found for {arg}.")
+            return
         rates = np.array(rates)
         x = rates[:, 0][:-13]
         y = rates[:, (3, 4)][:-13].mean(1)
