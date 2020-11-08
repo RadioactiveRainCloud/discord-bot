@@ -11,10 +11,12 @@ from dotenv import load_dotenv, find_dotenv
 from requests import Request, Session
 from discord.ext import commands
 
+### Embed messages will be handled by the DiscordBot class in the future ###
 
 # Cryptocurrency cog
+
+
 class CryptoCmd(commands.Cog):
-    # Initializes the cog and sets a client for grabbing coinbase pro data
     def __init__(self, bot):
         self.bot = bot
         # Open a coinbase client for grabbing coinbase crypto price
@@ -24,30 +26,29 @@ class CryptoCmd(commands.Cog):
         self.cmc_api_key = "b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c"
         self.cmc_api_url = "https://sandbox-api.coinmarketcap.com/v1/\
             cryptocurrency/info"
-        # Load optional environment variables.
-        if load_dotenv(find_dotenv(filename="crypto.env")):
-            self.cmc_api_key = os.getenv("CMC_API_KEY",
-                                         default=self.cmc_api_key)
-            self.cmc_api_url = os.getenv("CMC_API_URL",
-                                         default=self.cmc_api_url)
-            self.crypto_down_image = self.crypto_up_image = os.getcwd()
-            self.crypto_up_image += "\\cogs\\cryptocurrencies\\"
-            self.crypto_down_image = self.crypto_up_image
-            self.crypto_up_image += os.getenv("CRYPTO_UP", default="")
-            self.crypto_down_image += os.getenv("CRYPTO_DOWN", default="")
-        else:
-            self.bot.warning("crypto.env file not loading???")
         # Create dictionary to store data from coinmarketcap to reduce api calls
         self.logo_url_dict = dict()
+        # Load optional environment variables.
+        self.bot.debug("Loading crypto.env")
+        if load_dotenv(find_dotenv(filename="crypto.env")):
+            self.cmc_api_key = os.getenv(
+                "CMC_API_KEY", default=self.cmc_api_key)
+            self.cmc_api_url = os.getenv(
+                "CMC_API_URL", default=self.cmc_api_url)
+            image_path_string = os.getcwd() + "\\cogs\\cryptocurrencies\\"
+            self.crypto_down_image = self.crypto_up_image = image_path_string
+            self.crypto_up_image += os.getenv("CRYPTO_UP", default="")
+            self.crypto_down_image += os.getenv("CRYPTO_DOWN", default="")
+            return
+        self.bot.warning("crypto.env file not loading???")
         return
 
-    # Command for grabbing a crypto's USD price stats.
-    # arg should be a ticker symbol for the desired cryptocurrency.
     @commands.command()
     async def cbpro(self, ctx, arg="BTC"):
         """Returns USD pair for given coinbase ticker symbol"""
         arg = arg.upper()  # Set the argument string for API's.
         title = f"{arg}-USD"  # Set the title for an embed
+        self.bot.info(f"Searching for {title}-USD on cbpro.")
         file = None
         # Collect data needed to generate embed.
         if arg not in self.logo_url_dict.keys():
@@ -96,29 +97,31 @@ class CryptoCmd(commands.Cog):
         await ctx.send(file=file, embed=embed_message)
         return
 
-
     # Tries to find coinmarketcap data for the argument and put it in dictionary
+
     async def _try_cmc_lookup(self, arg):
-        # Set the headers for the request.
+        """Tries to find coinmarketcap data for the argument and puts the data
+        into a dictionary to use later."""
+        self.bot.info(f"Looking for {arg} on coinmarketcap.")
+        # Set the headers and parameters for the request.
         headers = {
             "Accepts": "application/json",
             "X-CMC_PRO_API_KEY": self.cmc_api_key
         }
+        parameters = {"symbol": arg}
         # Request data from coinmarketcap. If found, add it to dictionary
-        async with aiohttp.ClientSession() as session:
-            try:
+        try:
+            async with aiohttp.ClientSession() as session:
                 async with session.get(
-                        url=self.cmc_api_url,
-                        headers=headers,
-                        params={"symbol": arg}
+                    url=self.cmc_api_url,
+                    headers=headers,
+                    params=parameters
                 ) as response:
-                    response = await response.json()
-                    try:
-                        self.logo_url_dict[arg] = response["data"][arg]["logo"]
-                    except Exception as e:
-                        self.bot.exception(e)
-            except Exception as e:
-                self.bot.exception(e)
+                    json_data = await response.json()
+                    self.logo_url_dict[arg] = json_data["data"][arg]["logo"]
+                    self.bot.info(f"{arg} logo added to dictionary.")
+        except Exception as e:
+            self.bot.exception(e)
         return
 
     @commands.command()
